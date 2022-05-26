@@ -5,7 +5,7 @@ from PIL import Image
 import time
 
 #initalizing the game setting
-WB = 'White'
+WB = 'white'
 winner = None
 draw = False
 width = 600
@@ -69,39 +69,61 @@ def game_opening():
     pyg.draw.line(screen, line_color, (0, height / 8 * 7), (width, height / 8 * 7), 7)
     draw_status()
 
+def check_win():
+    global board, winner, draw
+    if board.count(None) > 0:
+        winner = None
+    elif board.count('white') == board.count('black'):
+        draw = True
+    elif board.count('white') > board.count('black'):
+        winner = 'white'
+    else:
+        winner = 'black'
+
+
 #drawing the images on the board
 def drawWB(row, col):
     global board,WB
     if row == 1:
-        posx = 30
+        posx = 11.25
     if row == 2:
-        posx = width/8 + 30
+        posx = width/8 + 11.25
     if row == 3:
-        posx = width/8*2 + 30
+        posx = width/8*2 + 11.25
     if row == 4:
-        posx = width/8*3 + 30
+        posx = width/8*3 + 11.25
     if row == 5:
-        posx = width/8*4 + 30
+        posx = width/8*4 + 11.25
     if row == 6:
-        posx = width/8*5 + 30
+        posx = width/8*5 + 11.25
     if row == 7:
-        posx = width/8*6 + 30
+        posx = width/8*6 + 11.25
     if row == 8:
-        posx = width/8*7 + 30
+        posx = width/8*7 + 11.25
 
     if col == 1:
-        posy = 30
+        posy = 11.25
     if col == 2:
-        posy = (height)/3 + 30
+        posy = (height)/8 + 11.25
     if col == 3:
-        posy = (height)/3*2 + 30
-    board[row-1][col-1] = XO
-    if(WB == 'White'):
+        posy = (height)/8*2 + 11.25
+    if col == 4:
+        posy = (height)/8*3 + 11.25
+    if col == 5:
+        posy = (height)/8*4 + 11.25
+    if col == 6:
+        posy = (height)/8*5 + 11.25
+    if col == 7:
+        posy = (height)/8*6 + 11.25
+    if col == 8:
+        posy = (height)/8*7 + 11.25
+    board[row-1][col-1] = WB
+    if(WB == 'white'):
         screen.blit(w_img, (posy, posx))
-        WB = 'Black'
+        WB = 'black'
     else:
         screen.blit(b_img, (posy, posx))
-        WB = 'White'
+        WB = 'white'
     pyg.display.update()
 
 def userClick():
@@ -109,37 +131,57 @@ def userClick():
     x, y = pyg.mouse.get_pos()
 
     #get column of mouse click (1-8)
-    if(x < width / 8):
+    if (x < width / 8):
         col = 1
-    elif(x < width / 8 * 2):
+    elif (x < width / 8 * 2):
         col = 2
-    elif(x < width):
+    elif (x < width / 8 * 3):
         col = 3
+    elif (x < width / 8 * 4):
+        col = 4
+    elif (x < width / 8 * 5):
+        col = 5
+    elif (x < width / 8 * 6):
+        col = 6
+    elif (x < width / 8 * 7):
+        col = 7
+    elif (x < width):
+        col = 8
     else:
         col = None
 
     #get row of mouse click (1-8)
-    if(y<height/3):
+    if (y < height / 8):
         row = 1
-    elif (y<height/3*2):
+    elif (y < height / 8 * 2):
         row = 2
-    elif(y<height):
+    elif (y < height / 8 * 3):
         row = 3
+    elif (y < height / 8 * 4):
+        row = 4
+    elif (y < height / 8 * 5):
+        row = 5
+    elif (y < height / 8 * 6):
+        row = 6
+    elif (y < height / 8 * 7):
+        row = 7
+    elif (y < height):
+        row = 8
     else:
         row = None
     #print(row,col)
 
     if(row and col and board[row-1][col-1] is None):
-        global XO
+        global WB
 
         #draw the x or o on screen
         drawWB(row, col)
         check_win()
 
 def reset_game():
-    global TTT, winner,XO, draw
+    global board, winner, WB, draw
     time.sleep(3)
-    XO = 'x'
+    WB = 'white'
     draw = False
     game_opening()
     winner=None
