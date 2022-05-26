@@ -50,7 +50,7 @@ def draw_status():
 def game_opening():
     screen.blit(opening, (0, 0))
     pyg.display.update()
-    time.sleep(1)
+    time.sleep(3)
     screen.fill(black)
     pyg.draw.line(screen, line_color, (width / 8, 0), (width / 8, height), 7)
     pyg.draw.line(screen, line_color, (width / 8 * 2, 0), (width / 8 * 2, height), 7)
@@ -71,9 +71,14 @@ def game_opening():
 
 def check_win():
     global board, winner, draw
-    if board.count(None) > 0:
+    if board.count(None) == 0:
+        wbcounter()
+    else:
         winner = None
-    elif board.count('white') == board.count('black'):
+
+def wbcounter():
+    global board, winner, draw
+    if board.count('white') == board.count('black'):
         draw = True
     elif board.count('white') > board.count('black'):
         winner = 'white'
@@ -187,6 +192,7 @@ def reset_game():
     winner=None
     board = [[None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8]
 
+
 game_opening()
 
 #game loop forever
@@ -198,7 +204,7 @@ while(True):
         elif event.type == MOUSEBUTTONDOWN:
             # the user clicked; place an X or O
             userClick()
-            if(winner or draw):
+            if(winner is not None or draw is True):
                 reset_game()
 
     pyg.display.update()
