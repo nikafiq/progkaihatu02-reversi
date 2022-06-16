@@ -13,10 +13,6 @@ height = 600
 black = (34, 139, 34) #actually green colored
 line_color = (255,140,0)
 
-#8x8 board setting
-board = [[None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8]
-#print(board)
-
 #pygame windows setting
 pyg.init()
 fps = 30
@@ -31,6 +27,18 @@ b_img = pyg.image.load('images/black.png')
 w_img = pyg.transform.scale(w_img, (38, 38))
 b_img = pyg.transform.scale(b_img, (38, 38))
 opening = pyg.transform.scale(opening, (width, (height+100)))
+
+#8x8 board setting
+board = [[None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8]
+board[3][4] = 'black'
+board[4][3] = 'black'
+board[3][3] = 'white'
+board[4][4] = 'white'
+screen.blit(b_img, (36.25, 49))
+screen.blit(b_img, (49, 36.25))
+screen.blit(w_img, (49, 49))
+screen.blit(w_img, (36.25, 36.25))
+#print(board)
 
 def draw_status():
     global draw
@@ -74,7 +82,7 @@ def check_win():
     if board.count(None) == 0:
         wbcounter()
     else:
-        winner = None
+        pass
 
 def wbcounter():
     global board, winner, draw
@@ -179,7 +187,7 @@ def userClick():
     if(row and col and board[row-1][col-1] is None):
         global WB
 
-        #draw the x or o on screen
+        #draw the white or black on screen
         drawWB(row, col)
         check_win()
 
@@ -189,7 +197,7 @@ def reset_game():
     WB = 'white'
     draw = False
     game_opening()
-    winner=None
+    winner = None
     board = [[None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8, [None]*8]
 
 
@@ -202,9 +210,9 @@ while(True):
             pyg.quit()
             sys.exit()
         elif event.type == MOUSEBUTTONDOWN:
-            # the user clicked; place an X or O
+            # the user clicked; place an white or black
             userClick()
-            if(winner is not None or draw is True):
+            if(winner != None or draw is True):
                 reset_game()
 
     pyg.display.update()
